@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<title>系统设置</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+			</head>
+
+	<body style="background: #EFEFF4;">
+		<header class="mui-bar mui-bar-nav" style="background:#b70016;height: 50px;">
+			<a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+						<h1 id="title" class="mui-title">系统设置</h1>
+		</header>
+			<div class="mui-content">
+		    <div class="mui-content-padded">  
+		        <h4 style='margin-top:35px;margin-bottom:35px;text-align: center;'>通过滑动滑块或输入数值<br/><br/>调整页面元素显示的大小</h4> 
+		        <div class="mui-input-row mui-input-range field-contain">
+		            <div style="float:left">
+		                <label>数值:</label>
+		                <input type="text" id='field-range-input' value='5' style="text-align: center;">
+		            </div>
+		            <div>
+		                <input type="range" id='field-range' value="5" step="0.2" min="0.6" max="5" style="margin-top:30px;padding:8px 0px;background: #7ae4ff;" />
+		            </div>
+		        </div>   
+		        <div><center><button type="reset"  style="border:1px solid #cccccc;margin-top: 3px;">重置</button>
+		        <button type="onsubmit" style="border:1px solid #cccccc;margin-top: 3px;">保存</button></center></div>
+		    </div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+<script>
+		mui.init();
+	    //监听input事件，获取range的value值，也可以直接element.value获取该range的值
+	    var rangeList = document.querySelectorAll('input[type="range"]');
+	    for(var i=0,len=rangeList.length;i<len;i++){
+	        rangeList[i].addEventListener('input',function(){
+	            if(this.id.indexOf('field')>=0){
+	                document.getElementById(this.id+'-input').value = this.value;
+	            }else{
+	                document.getElementById(this.id+'-val').innerHTML = this.value;
+	            }
+	            
+	
+	        });
+	    }
+	
+	    document.getElementById('field-range-input').addEventListener('input',function(){
+	        document.getElementById('field-range').value = this.value;
+	    });
+	</script>
+</html>

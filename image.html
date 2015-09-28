@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<title>启动页</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+
+		<style>
+			.mui-slider-indicator {
+				position: absolute;
+				bottom: 60px;
+				width: 100%;
+				text-align: center;
+				background: 0 0
+			}
+			.mui-table-view-cell.mui-collapse .mui-collapse-content>.mui-slider {
+				width: auto;
+				height: auto;
+				margin: 0px 0px
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-slider">
+				<div class="mui-slider-group">
+					<div class="mui-slider-item">
+						<a href="javascript:;">
+							<img src="images/1.jpg">
+						</a>
+					</div>
+					<div id="tiaozhuan" class="mui-slider-item" style="margin-left: -1px;padding-left: -1px;">
+						<a>
+							<img src="images/2.jpg">
+						</a>
+					</div>
+				</div>
+				<div class="mui-slider-indicator">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator"></div>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="db/resolution.js" type="text/javascript" charset="utf-8"></script>
+		<script src="db/category.js" type="text/javascript" charset="utf-8"></script>
+		<script src="db/material.js" type="text/javascript" charset="utf-8"></script>
+		<script src="db/question.js" type="text/javascript" charset="utf-8"></script>
+		<script src="db/question-update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="db/option.js" type="text/javascript" charset="utf-8"></script>
+		<script src="db/option-update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/createDb.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				var shengji = self.shengji;
+				if (shengji == 'false') { //新安装
+					createTable();
+				} else { //版本升级
+					updateTable();
+				}
+				window.localStorage.setItem('isAlreadyLogin', 'false');
+				plus.navigator.setFullscreen(true);
+				plus.nativeUI.closeWaiting();
+				mui('#tiaozhuan').on('tap', 'a', function() {
+					plus.navigator.setFullscreen(false);
+					mui.openWindow({
+						id: 'login-win',
+						url: 'app/login.html',
+						show: {
+							duration: 200
+						}
+					})
+				})
+			});
+			var first = null;
+			mui.back = function() {
+				if (!first) {
+					first = new Date().getTime();
+					mui.toast('再按一次退出应用');
+					setTimeout(function() {
+						first = null;
+					}, 1000);
+				} else {
+					if (new Date().getTime() - first < 1000) {
+						plus.runtime.quit();
+					}
+				}
+			};
+		</script>
+	</body>
+
+</html>

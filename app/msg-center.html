@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8">
+		<title>会计自学</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			.mui-table-view:before {
+				height: 0px !important;
+			}
+			.mui-table-view:after {
+				height: 0px !important;
+			}
+			.mui-content {
+				padding-top: 0 !important;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+									<div style="margin-top: -5px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">消息中心</h1>
+			</div>
+		</header>
+		<div class="mui-content">
+			<ul style="padding-top:40px;" class="mui-table-view" id="list" style="list-style:circle ;">
+			</ul>
+		</div>
+		<script type="text/html" id="template-message-id">
+			<li class="mui-table-view-cell">
+				<div>
+					{title}
+					<span class="mui-pull-right mui-h5">{datetime}</span>
+				</div>
+				<p>{content}</p>
+			</li>
+		</script>
+
+		<!--
+        	时间：2015-04-10
+        	描述：
+        -->
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/service.js"></script>
+		<script type="text/javascript">
+			function initDom() {
+				var list = document.getElementById("list");
+				list.innerHTML = '';
+				var messageTemplate = document.getElementById("template-message-id").innerHTML;
+				queryAllMessage(function(rows) {
+					var htmlStr = '';
+					if (rows.length < 1) {
+						list.innerHTML = "<li><div style='text-align: center;color: lightgray;'>还没有消息</div></li>";
+					} else {
+						for (var i = 0; i < rows.length; i++) {
+							htmlStr += render(messageTemplate, rows[i]);
+						}
+						list.innerHTML = htmlStr;
+					}
+				});
+			}
+			mui.init();
+			mui.plusReady(function() {
+				initDom();
+			});
+		</script>
+	</body>
+
+</html>

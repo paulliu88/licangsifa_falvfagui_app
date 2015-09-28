@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta charset="utf-8">
+		<title>会计自学</title>
+				<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/routes.js"></script>
+		<script src="../js/service.js"></script>
+		<script src="../js/app.js"></script>
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			header.mui-bar {
+				/*display: none;*/
+			}
+			.mui-bar-nav~.mui-content {
+				padding: 0;
+			}
+			.mui-content-padded {
+				/*padding: 10px;*/
+			}
+			.mui-content-padded a {
+				margin: 5px;
+				width: 45px;
+				height: 45px;
+				display: inline-block;
+				border-radius: 5px;
+				padding-top: 16px;
+			}
+			.mui-content-padded a {
+				margin-top: 12px;
+			}
+			.mui-content a {
+				color: #8F8F94;
+			}
+			.mui-content a.active {
+				color: #007aff;
+			}
+			.my-result-span {
+				color: white;
+				font-size: 25px;
+			}
+			.my-jieguo {
+				text-align: center;
+				padding-top: 70px;
+				font-size: 50px;
+				font-family: '宋体';
+				font-weight: 900;
+			}
+			.my-dati {
+				text-align: center;
+				font-size: 25px;
+				margin-top: 20px;
+			}
+			.my-chengjidan {
+				text-align: center;
+				font-size: 1.5em;
+				font-weight: bold;
+				color: white;
+				margin-top: 30px;
+			}
+			.my-button {
+				background-color: #323333;
+				font-size: 1.3em;
+				font-weight: bolder;
+				margin-top: 30px;
+				margin-bottom: 20px;
+				color: white;
+				border: 0px;
+				padding: 10px 0px;
+			}
+			.my-div-outer {
+				padding-right: 20px;
+				padding-left: 20px;
+			}
+			.my-mui-card {
+				background-color: #535353;
+				/*top: 200px;*/
+				
+				margin: 20px;
+				width: 90%;
+				/*position: absolute;*/
+				
+				padding-bottom: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color: #F37C61;">
+			<div style="margin-top: -5px;">
+			<a class="mui-action-back mui-icon mui-pull-left" style="font-size: 18px;margin-top:5px;margin-left: 2px;">退出</a>
+			<h1 class="mui-title">考试成绩</h1>
+			</div>
+		</header>
+		<div class="mui-content">
+			<!--<h1 class="my-jieguo" id="result-id"></h1>-->
+			<h4 id="time-range-id" style="padding-top: 70px;text-align: center;">考试时间：</h4>
+			<div style="margin-top: 20px;text-align: center;"><span id="defei-id" style="font-size: 35px;"></span>&nbsp;&nbsp;&nbsp;<em>总分100</em>
+			</div>
+			<p id="overview-msg-id" class="my-dati"></p>
+			<div class="mui-content-padded mui-card my-mui-card">
+
+				<p class="my-chengjidan">成绩单</p>
+				<div id="exam-order-id" style="text-align: center;">
+
+				</div>
+				<div class="my-div-outer">
+					<button id="exam-parse" data-href="letest-resolution.html" name="解析" class="mui-btn mui-btn-block my-button">全部解析</button>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/html" id="template-parse-id">
+			<a style="{isOk}" data-indexed="{indexed}"><span class="my-result-span">{indexed}</span></a>
+		</script>
+		<script>
+			 //解析
+			function parseEvent() {
+				var examParse = document.getElementById('exam-parse');
+				examParse.addEventListener('tap', function() {
+					var href = this.getAttribute('data-href');
+					var name = this.getAttribute('name');
+					var id = this.getAttribute('id');
+					mui.openWindow({
+						id: 'resolution-win',
+						url: href,
+						waiting: {
+							autoShow: false
+						},
+						extras: {
+							name: name,
+							partId: id,
+							serviceObj: window.serviceObj
+						}
+					})
+				});
+			}
+			mui("#exam-order-id").on('tap', 'a', function() {
+				var indexed = this.getAttribute("data-indexed");
+				mui.openWindow({
+					id: 'resolution-' + indexed + '-win',
+					url: "letest-resolution.html",
+					waiting: {
+						autoShow: false
+					},
+					extras: {
+						indexed: indexed,
+						serviceObj: window.serviceObj
+					}
+				});
+			});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				window.serviceObj = minix(self.serviceObj);
+				window.questionList = window.serviceObj.questionList;
+				//				var resultMsg = window.serviceObj.getResultMsgForTest();
+				//				document.getElementById("result-id").innerHTML = resultMsg;
+				//				if (resultMsg == "闯关失败") {
+				//					document.getElementById("result-id").style.color = "red";
+				//				} else {
+				//					document.getElementById("result-id").style.color = "green";
+				//				}
+				//				time-range-id
+				var testStartTime = window.localStorage.getItem('_test_start_time');
+				var testEndTime = window.localStorage.getItem('_test_end_time');
+				if (!testStartTime) return;
+				window.localStorage.removeItem('_test_start_time');
+				window.localStorage.removeItem('_test_end_time');
+				var minus = parseInt(testEndTime) - parseInt(testStartTime);
+				var fen = Math.round(minus / 60000);
+				var miao = Math.round((minus / 60000) * 60 % 60);
+				document.getElementById("time-range-id").innerHTML = '实际用时：' + fen + '分钟' + miao + '秒';
+				var defeiDiv = document.getElementById("defei-id");
+				var fenshu = window.serviceObj.getFenShu();
+				defeiDiv.innerText = fenshu + '分';
+				var questionCount = window.questionList.length;
+				var okCount = 0;
+				var tp = document.getElementById("template-parse-id").innerHTML;
+				var htmlStr = '';
+				for (var i = 0; i < window.questionList.length; i++) {
+					var questionAll = window.questionList[i]
+					var isOk = questionAll.question.isOk;
+					if (isOk) {
+						okCount = okCount + 1;
+						isOk = 'padding-top: 13px;background-color: #2EB348';
+					} else {
+						isOk = 'padding-top: 13px;background-color: #FB1C1C';
+					}
+					var type = questionAll.question.type;
+					if (window.__golbalType != type) { // 答题卡分类
+						htmlStr += '<div style="height:40px;"></div><hr/><h3>' + type + '：</h3><br/>';
+						window.__golbalType = type;
+					}
+					htmlStr += render(tp, {
+						isOk: isOk,
+						indexed: questionAll.question.indexed
+					});
+				}
+				document.getElementById("exam-order-id").innerHTML = htmlStr;
+				document.getElementById('overview-msg-id').innerHTML = '共' + questionCount + '题，答对' + okCount + '道题';
+				parseEvent();
+			});
+			var old_back = mui.back;
+			mui.back = function() {
+				var wv = plus.webview;
+				var courseId = window.serviceObj.getCourseId();
+				wv.close('prev-win-' + courseId);
+				wv.close('question-win-' + courseId);
+				wv.close('card-win-' + courseId);
+				wv.close('submit-win-' + courseId);
+				wv.show('index-win');
+			};
+		</script>
+	</body>
+
+</html>

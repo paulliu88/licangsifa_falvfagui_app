@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<script src="../js/scale.js"></script>
+		<title>版本升级</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			.body {
+				background-image: url(images/drag/qidongdengdaiye.png);
+				background-repeat: no-repeat;
+				background-size: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<!--
+	    	时间：2015-04-25
+	    	描述：
+	    -->
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			mui.plusReady(function() {
+				getuiEvent();
+				checkVersion();
+			});
+
+			function checkVersion() {
+					plus.nativeUI.showWaiting();
+					var appVersion = plus.runtime.version;
+					var av = window.localStorage.getItem("appVersion");
+					window.localStorage.setItem("appVersion", appVersion);
+					if (av && av == appVersion) { //没有版本更新，也不是第一次安装
+						mui.openWindow({
+							id: 'pre-win',
+							url: 'pre.html',
+							show: {
+								duration: 200
+							}
+						});
+					} else { //app第一次安装或app升级了
+						var shengji = 'false';
+						if (av && appVersion != av) { //升级
+							shengji = 'true';
+						}
+						mui.openWindow({
+							id: 'image-win',
+							url: 'image.html',
+							extras: {
+								shengji: shengji
+							},
+							show: {
+								duration: 200
+							}
+						});
+					}
+				}
+				/**
+				 * 个推消息记录
+				 */
+
+			function getuiEvent() {
+				try {
+					/**
+					 * 个推的透传，使用key--value对，会重写msg中的title和content
+					 * title:正确，content：错误，则title是正确的信息，content则为json格式的数据
+					 * title:错误，content：正确，则title为“个推”，content是正确的信息
+					 */
+					plus.push.addEventListener("receive", function(msg) {
+						try {
+							//用户推送输入错误，则不再保存消息
+							var contents = msg.content;
+							var contentJson = JSON.parse(contents);
+							//用户推送正确的信息，保存信息到消息中心
+						} catch (e) {
+							saveMessage(msg);
+							if (msg) {
+								mui.openWindow({
+									id: "msg-center-win",
+									url: "app/msg-center.html",
+									waiting: {
+										autoShow: true,
+										title: '消息中心',
+										options: {
+											width: 150,
+											height: 100
+										}
+									},
+									show: {
+										duration: 200
+									}
+								});
+							}
+						}
+					});
+				} catch (e) {}
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>exam</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/iconfont.css">
+		<link rel="stylesheet" href="../css/mui.min.css">
+
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.youbar {
+				margin-right: 15px !important;
+			}
+			.my-btn-shoucang {
+				margin-top: 11px;
+				border: 1px solid white;
+				font-size: 13px;
+				padding: 1px 3px;
+				border-radius: 5px;
+				color: white;
+			}
+			.my-btn-shoucang:active {
+				color: lightgray;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+						<div style="margin-top: -5px;">
+			<a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="shoucang" data-section-id='' data-name="收藏本" data-href='' class="mui-btn mui-btn-danger mui-pull-right my-btn-shoucang" style=" display: none;">
+				取消本收藏
+			</a>
+			<a id="cuoti" data-section-id='' data-name="错题本" data-href='' class="mui-btn mui-btn-danger mui-pull-right my-btn-shoucang" style=" display: none;">
+				删除本错题
+			</a>
+			<h1 id="title" class="mui-title" style="margin-left:-10%;"></h1>
+			</div>
+		</header>
+		<footer class="mui-bar mui-bar-footer">
+			<ul class="mui-pager" style="margin-top: 5px;">
+				<li id="pre-id" class="mui-disabled">
+					<a> &nbsp;&nbsp;上&nbsp;&nbsp;一&nbsp;&nbsp;题&nbsp;&nbsp; </a>
+				</li>
+				<li id="next-id" style="margin-left: 50px;">
+					<a> &nbsp;&nbsp;下&nbsp;&nbsp;一&nbsp;&nbsp;题&nbsp;&nbsp; </a>
+				</li>
+			</ul>
+		</footer>
+		<div class="mui-content">
+			<div class="my-pagination" style="margin-top: 20px;margin-bottom: 20px;" id="list">
+			</div>
+
+			<a id="shoucang-all-id" data-section-id='' data-name="收藏本" data-href='' class="mui-btn mui-btn-danger my-btn-shoucang" style="width: 70%;height: 45px; padding-top: 10px; margin: 0 auto;font-size: large;   display: none;">
+				取消收藏
+			</a>
+			<a id="cuoti-all-id" data-section-id='' data-name="错题本" data-href='' class="mui-btn mui-btn-danger my-btn-shoucang" style="width: 70%;height: 45px; padding-top: 10px; margin: 0 auto;font-size: large;   display: none;">
+				删除错题
+			</a>
+		</div>
+		<script type="text/html" id="template-question-id">
+			<div class="mui-card duoxuan" data-id="{id}" style="padding-top: 6px;padding-bottom: 6px;display: none;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<b style="color: blue;">{indexed}/{pageSize}({type})</b>： {name}
+					</li>
+		</script>
+		<script type="text/html" id="template-option-id">
+			<li class="mui-table-view-cell mui-{inputType} mui-left">
+				<input class="question" name="{inputName}" type="{inputType}" disabled data-checked="false" {checked} data-label="{label}">{label}：{name}
+			</li>
+		</script>
+		<script type="text/html" id="template-correct-id">
+			<li class="mui-table-view-cell" style="color: {isOkStyle};">你的答案：{userAnswer}，正确答案：{questionAnswer}</li>
+		</script>
+		<script type="text/html" id="template-collect-id">
+			<li class="mui-table-view-cell" style="">正确答案：{questionAnswer}</li>
+		</script>
+		<script type="text/html" id="template-material-id">
+			<li class="mui-table-view-cell" style="display: {display};">{name}</li>
+		</script>
+
+		<!--
+        	时间：2015-04-13
+        	描述：
+        -->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/routes.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/service.js"></script>
+
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				window.sectionId = self.sectionId;
+				window.type = self.type;
+				window.typeName = self.typeName;
+				eventAllSectionCancel();
+				disableBookmarkBtn();
+				initDom();
+			});
+			/**
+			 *   取消单选题或多选题或判断题的收藏或错题的按钮事件
+			 */
+			function eventAllSectionCancel() {
+					function innerAjax(sectionId, typeText, callback) {
+						var btnArray = ['是', '否'];
+						mui.confirm('清空' + typeText + '后不能恢复，确认清空吗？', '', btnArray, function(e) {
+							if (e.index == 0) {
+								var idCard = window.localStorage.getItem('phone');
+								mui.ajax(Routes.urls.collection.clearBankForSection, {
+									data: {
+										type: window.type,
+										idCard: idCard,
+										sectionId: sectionId
+									},
+									type: 'post',
+									success: function() {
+										mui.toast(typeText + '已清空');
+										//										document.getElementById('list').innerHTML =
+										//											'<li class="mui-table-view-cell mui-media">' +
+										//											'<div class="mui-media-body" style="text-align: center;">' +
+										//											'<p class="mui-ellipsis" style="">没有数据</p>' +
+										//											'</div>' +
+										//											'</li>';
+										callback();
+									}
+								});
+							}
+						});
+					}
+					try {
+						var shoucangSectionBtn = document.getElementById("shoucang-all-id");
+						shoucangSectionBtn.setAttribute('data-section-id', window.sectionId);
+						shoucangSectionBtn.addEventListener('tap', function() {
+							var sectionId = this.getAttribute('data-section-id');
+							var self = this;
+							innerAjax(sectionId, '所有' + window.typeName + '收藏', function() {
+								self.parentElement.removeChild(self);
+								mui.back();
+							});
+						});
+						var cuotiSectionBtn = document.getElementById("cuoti-all-id");
+						cuotiSectionBtn.setAttribute('data-section-id', window.sectionId);
+						cuotiSectionBtn.addEventListener('tap', function() {
+							var sectionId = this.getAttribute('data-section-id');
+							var self = this;
+							innerAjax(sectionId, '所有' + window.typeName + '错题', function() {
+								self.parentElement.removeChild(self);
+								mui.back();
+							});
+						});
+					} catch (e) {}
+				}
+				/**
+				 * 上一题和下一题按钮事件
+				 */
+
+			function preAndNextEvent() {
+				var preDom = document.getElementById("pre-id");
+				preDom.addEventListener('tap', function() {
+					prev();
+				});
+				var nextDom = document.getElementById("next-id");
+				nextDom.addEventListener('tap', function() {
+					next();
+				});
+			}
+			var childPagination = null;
+			/**
+			 * 隐藏所有
+			 */
+			function hideAll() {
+					for (var i = 0; i < childPagination.length; i++) {
+						var child = childPagination[i];
+						child.style.display = 'none';
+					}
+				}
+				/**
+				 * 显示第一题
+				 */
+
+			function showFirst() {
+				show(0)
+			}
+			window.currentNo = 0;
+			/**
+			 * 显示第idx题
+			 * @param {Object} idx
+			 */
+			function show(idx) {
+					hideAll();
+					window.currentNo = idx;
+					var _questionId = '';
+					for (var i = 0; i < childPagination.length; i++) {
+						if (i == idx) {
+							var child = childPagination[i];
+							child.style.display = 'block';
+							_questionId = child.getAttribute("data-id");
+						}
+					}
+					var url = Routes.urls.times[parseInt(window.type) == 1? 'addTimesForBookmark':'addTimesForError'];
+					ajaxAddTimes(url,_questionId);
+				}
+				/**
+				 * 上一题按钮样式
+				 */
+
+			function preBtnEffect() {
+					if (window.currentNo <= 1) {
+						document.getElementById("pre-id").classList.add('mui-disabled');
+					}
+					if (window.currentNo < childPagination.length) {
+						document.getElementById("next-id").classList.remove('mui-disabled');
+					}
+				}
+				/**
+				 * 下一题按钮样式
+				 */
+
+			function nextBtnEffect() {
+					if (window.currentNo >= 0) {
+						document.getElementById("pre-id").classList.remove('mui-disabled');
+					}
+					if (window.currentNo >= (childPagination.length - 2)) {
+						document.getElementById("next-id").classList.add('mui-disabled');
+					}
+				}
+				/**
+				 * 上一题事件
+				 */
+
+			function prev() {
+					preBtnEffect();
+					if (window.currentNo) {
+						window.currentNo = window.currentNo - 1;
+						show(window.currentNo);
+						var _self = childPagination[currentNo]
+						var _questionId = _self.getAttribute("data-id");
+						var questionAll = window.serviceObj.getQuestion(_questionId);
+						updateBookmarkIco(questionAll);
+						updateErrorIco(questionAll);
+					}
+				}
+				/**
+				 * 下一题事件
+				 */
+
+			function next() {
+				nextBtnEffect();
+				if (window.currentNo < (childPagination.length - 1)) {
+					window.currentNo = window.currentNo + 1;
+					show(window.currentNo);
+					var _self2 = childPagination[currentNo]
+					var _questionId2 = _self2.getAttribute("data-id");
+					var questionAll = window.serviceObj.getQuestion(_questionId2);
+					updateBookmarkIco(questionAll);
+					updateErrorIco(questionAll);
+					return false;
+				} else {
+					return true;
+				}
+			}
+			window.addEventListener("swiperight", prev);
+			window.addEventListener("swipeleft", next);
+			/**
+			 * 更新收藏图标，显示当前题是否被收藏
+			 */
+			function updateBookmarkIco(questionAll) {
+					var questionId = questionAll.question.id;
+					var hasCollect = questionAll.hasCollect;
+					var shoucangDom = document.getElementById("shoucang");
+					shoucangDom.setAttribute("data-question-id", questionId);
+//					shoucangDom.setAttribute('data-question-id', questionId);
+					if (hasCollect && window.type == 1) {
+						shoucangDom.innerHTML = '取消本题收藏';
+						shoucangDom.style.display = 'block';
+					} else {
+						shoucangDom.innerHTML = '收藏本题';
+						shoucangDom.style.display = 'none';
+					}
+				}
+
+	/**
+			 * 更新错题图标，显示当前题是否被错题
+			 */
+			function updateErrorIco(questionAll) {
+					var questionId = questionAll.question.id;
+					var hasCollect = questionAll.hasCollect;
+					var shoucangDom = document.getElementById("cuoti");
+					shoucangDom.setAttribute("data-question-id", questionId);
+					document.getElementById("cuoti").setAttribute('data-question-id', questionId);
+					if (hasCollect && window.type == 2) {
+						shoucangDom.innerHTML = '删除本错题';
+						shoucangDom.style.display = 'block';
+					} else {
+						shoucangDom.innerHTML = '添加本错题';
+						shoucangDom.style.display = 'none';
+					}
+				}
+			
+			
+				/**
+				 *  点击收藏，收藏此试题
+				 */
+
+			function collectEvent() {
+				document.getElementById('shoucang').addEventListener('tap', function() {
+					var _questionId = this.getAttribute('data-question-id');
+					var questionAll = window.serviceObj.getQuestion(_questionId);
+					if (window.type == '2') {
+						var cuotiDom = document.getElementById("cuoti");
+						if (questionAll.errorDelete) { //已经删除
+							questionAll.errorDelete = false;
+							saveCollectLocalDbAndServer(questionAll);
+							mui.toast('已添加错题');
+							cuotiDom.innerHTML = '删除错题';
+						} else {
+							questionAll.errorDelete = true;
+							delteCollectLocalDbAndServer(_questionId);
+							mui.toast('已删除错题');
+							cuotiDom.innerHTML = '添加错题';
+							cuotiDom.style.display = 'none';
+						}
+					} else {
+						if (questionAll.hasCollect) {
+							mui.toast('已取消收藏');
+						} else {
+							mui.toast('已添加收藏');
+						}
+						window.serviceObj.updateBookMark(questionAll);
+						updateBookmarkIco(questionAll);
+					}
+				});
+			}
+
+			function errorEvent() {
+					document.getElementById("cuoti").addEventListener('tap', function() {
+						var _questionId = this.getAttribute('data-question-id');
+						var questionAll = window.serviceObj.getQuestion(_questionId);
+						if (window.type == '2') {
+							var cuoTiDom = document.getElementById("cuoti");
+							if (questionAll.errorDelete) { //已经删除
+								questionAll.errorDelete = false;
+								saveCollectLocalDbAndServer(questionAll.question);
+								mui.toast('已添加错题');
+								cuoTiDom.innerHTML = '删除错题';
+							} else {
+								questionAll.errorDelete = true;
+								delteCollectLocalDbAndServer(_questionId);
+								mui.toast('已删除错题');
+								cuoTiDom.innerHTML = '添加错题';
+								cuoTiDom.style.display = 'none';
+							}
+						} else {
+							if (questionAll.hasCollect) {
+								mui.toast('已取消收藏');
+							} else {
+								mui.toast('已添加收藏');
+							}
+							window.serviceObj.updateBookMark(questionAll);
+							updateBookmarkIco(questionAll);
+						}
+					});
+				}
+				/**
+				 * 初始化Dom
+				 */
+
+			function initDom() {
+					var tq = document.getElementById('template-question-id').innerHTML;
+					var to = document.getElementById('template-option-id').innerHTML;
+					var tc = document.getElementById("template-correct-id").innerHTML;
+					//					var tm = document.getElementById("template-material-id").innerHTML;
+					var tcl = document.getElementById("template-collect-id").innerHTML;
+					var list = document.getElementById('list');
+					queryQuestionAllForReview(window.sectionId, window.type, function(all) {}, function(serviceObj) {
+						window.serviceObj = minix(serviceObj);
+						var tempHtml = '';
+						for (var i = 0; i < window.serviceObj.questionList.length; i++) {
+							var all = window.serviceObj.questionList[i];
+							var htmlStr = '';
+							if (!all.question.isOk) {
+								all.question.isOkStyle = 'red';
+							} else {
+								all.question.isOkStyle = 'green';
+							}
+							//							if (all.material.id) {
+							//								all.material.display = 'block';
+							//							} else {
+							//								all.material.display = "none";
+							//							}
+							htmlStr += render(tq, all.question);
+							for (var j = 0; j < all.options.length; j++) {
+								var option = all.options[j];
+								if (option.isSelected) {
+									option.checked = 'checked';
+								} else {}
+								htmlStr += render(to, option);
+							}
+							if (window.type == 1) {
+								htmlStr += render(tcl, all.question);
+							} else {
+								htmlStr += render(tc, all.question);
+							}
+							//							htmlStr += render(tm, all.material);
+							htmlStr += "</ul></div>";
+							tempHtml += htmlStr;
+						}
+						list.innerHTML = list.innerHTML + tempHtml;
+						childPagination = document.getElementsByClassName("my-pagination")[0].children;
+						hideAll();
+						showFirst();
+						var indexed = self.indexed; //点击解析上的具体哪个试题获取到的试题的题号
+						if (indexed) {
+							show(indexed - 1);
+						}
+						preAndNextEvent();
+						updateBookmarkIco(window.serviceObj.questionList[0]);
+						updateErrorIco(window.serviceObj.questionList[0]);
+						collectEvent();
+						errorEvent();
+						if (window.serviceObj.questionList.length <= 1) {
+							var footer = document.getElementsByTagName("footer")[0];
+							footer.parentElement.removeChild(footer);
+						}
+					})
+				}
+				/**
+				 * 如果是错题，则不显示收藏按钮
+				 */
+
+			function disableBookmarkBtn() {
+				if (window.type == 2) {
+					document.getElementById("cuoti").style.display = 'block';
+					document.getElementById("title").innerHTML = '错题' + '(' + window.typeName + ')';
+					document.getElementById("cuoti-all-id").style.display = 'block';
+					document.getElementById("cuoti-all-id").innerHTML = '清空所有' + window.typeName + '错题';
+				} else {
+					document.getElementById("shoucang").style.display = 'block';
+					document.getElementById("title").innerHTML = '收藏题' + '(' + window.typeName + ')';
+					document.getElementById("shoucang-all-id").style.display = 'block';
+					document.getElementById("shoucang-all-id").innerHTML = '清空所有' + window.typeName + '收藏';
+				}
+			}
+			var old_back = mui.back;
+			mui.back = function() {
+				var self = plus.webview.currentWebview();
+				self.opener().evalJS('initDom();');
+				//执行mui封装好的窗口关闭逻辑；
+				old_back();
+			}
+		</script>
+
+	</body>
+
+</html>

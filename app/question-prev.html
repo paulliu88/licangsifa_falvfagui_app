@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>section</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/iconfont.css">
+		<style type="text/css">
+			#list {
+				/*避免导航边框和列表背景边框重叠，看起来像两条边框似得；*/
+				
+				margin-top: -1px;
+			}
+			.mui-badge {
+				padding: 2px 3px !important;
+				font-size: 10px !important;
+				margin: -2px -8px -2px 0px !important;
+			}
+			.mui-content {
+				background-color: white;
+			}
+			.mui-table-view:before {
+				height: 0px !important;
+			}
+			.mui-table-view:after {
+				height: 0px !important;
+			}
+			.my-mui-table-view {
+				margin-top: 0px !important;
+				margin-right: 0px !important;
+				margin-bottom: 0px !important;
+				margin-left: 0px !important;
+			}
+			.my-mui-badge {
+				top: 24% !important;
+				right: 10px !important;
+			}
+			.my-mui-badge-wrong {
+				top: 24% !important;
+				left: -30px !important;
+			}
+			.my-mui-table-view-cell {
+				padding: 15px !important;
+				/*border: 1px lightgray solid;*/
+			}
+			.kaishi {
+				width: 70px;
+				height: 25px;
+				border-radius: 3px;
+				margin-left: auto;
+				margin-right: auto;
+				padding-top: 3px;
+				background-color: #EA5555;
+				color: white;
+				font-size: 14px;
+			}
+			.biaoti {
+				word-wrap: break-word;
+				word-break: normal;
+				white-space: normal;
+				height: 50px;
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			.jie {
+				height: 100px;
+				width: 100%;
+				min-width: 70px;
+				padding-top: 10px;
+				text-align: center;
+				border: 1px solid lightgray;
+				background-color: #FBF8F8;
+				border-radius: 2px;
+				font-size: 17px;
+			}
+			.my-li-active:active {
+				background-color: #95DECA;
+			}
+			.suo {
+				background-color: green;
+				background-clip: padding-box;
+				color: white;
+				z-index: 9999;
+				border-radius: 35px;
+				width: 40px;
+				height: 40px;
+				position: absolute;
+				top: 40px;
+				padding-top: 9px;
+				position: absolute;
+				left: 50%;
+				margin-left: -12px;
+			}
+			.zhezhao {
+				position: absolute;
+				width: 100%;
+				height: 100px;
+				z-index: 99;
+				background-color: black;
+				top: 10px;
+				opacity: 0.4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+						<div style="margin-top: -5px;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title"></h1>
+			</div>
+		</header>
+		<div class="mui-content">
+			<div class="mui-card">
+				<ul id="outer-id" class="mui-table-view">
+				</ul>
+			</div>
+		</div>
+
+		<script type="text/html" id="template-question-id">
+			<!--<li class="my-mui-table-view-cell mui-table-view-cell mui-media mui-col-xs-3">
+				<a id="{id}" href="javascript:;" data-id="{id}" data-jie-id="{jieId}" data-seq-id="{seq}">-->
+			<!--<span class="my-mui-badge-wrong mui-badge mui-badge-danger mui-badge-inverted">{collectTime}</span>-->
+			<!--<span class="my-mui-badge mui-badge mui-badge-primary mui-badge-inverted">{answerTime}</span>-->
+			<!--<div class="mui-media-body">{seq}</div>
+				</a>
+			</li>-->
+			<button type="button" id="question-btn-{id}" class="mui-btn" data-id="{id}" data-jie-id="{jieId}" data-seq-id="{seq}" style="width: 23%;margin: 2px auto;background-color: #86D79C;">{seq}
+				<span class="mui-badge" style="color: white;font-weight: bold;float: right;margin-top:-8px!important;margin-right: -13px!important;display: none;">{answerTime}</span>
+			</button>
+		</script>
+		<script type="text/html" id="template-question-noanswer-id">
+			<button type="button" id="question-btn-{id}" class="mui-btn mui-btn-default" data-id="{id}" data-jie-id="{jieId}" 
+				data-seq-id="{seq}" style="width: 23%;margin: 2px auto;">{seq}
+			</button>
+		</script>
+		<script type="text/html" id="template-question-list-id">
+			<li class="my-mui-table-view-cell mui-table-view-cell mui-collapse">
+				<a class="mui-navigate-right"> &nbsp;{jie}</a>
+				<div class="mui-collapse-content" style="text-align: center;">
+					<!--<ul class="my-mui-table-view mui-table-view mui-grid-view mui-grid-9">-->
+		</script>
+		<script type="text/html" id="template-span-id">
+			<span class="mui-badge" style="color: white;font-weight: bold;float: right;margin-top:-8px!important;margin-right: -13px!important;display: none;">{answerTime}</span>
+		</script>
+
+		<!--
+			时间：2015-04-10
+			描述：
+		-->
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/routes.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			window.lightLastQuestionId;
+			mui.init();
+			mui.plusReady(function() {
+				window.self = plus.webview.currentWebview();
+				window.chapterId = window.self.chapterId;
+				window.chapterTitle = window.self.chapterTitle;
+				initDom();
+				chapterTapEvent();
+				var titleElem = document.getElementById("title")
+				titleElem.innerHTML = window.self.chapterTitle;
+				titleElem.className = "mui-title mui-fadein";
+			});
+			/**
+			 * 高亮最后一题
+			 * @param {Object} lastQusetionId
+			 */
+			function lightLastBtn(lastQusetionId) {
+					if (window.lightLastQuestionId) { // 清除上一次的高亮
+						document.getElementById('question-btn-' + window.lightLastQuestionId).style.backgroundColor = '#86D79C';
+					}
+					var _btn = document.getElementById('question-btn-' + lastQusetionId);
+					_btn.style.backgroundColor = '#ffA500';
+					window.lightLastQuestionId = lastQusetionId;
+				}
+				/**
+				 * 更新做过的题的次数和状态
+				 * @param {Object} questionIds
+				 */
+
+			function updateStatus(questionIds) {
+					if (questionIds == '' || questionIds == 'undifined') {
+						return;
+					}
+					var qids = questionIds.split(',');
+					for (var i = 0; i < qids.length; i++) {
+						var _id = qids[i];
+						var btn = document.getElementById('question-btn-' + _id);
+						if (btn.children.length > 0) {
+							var jb = btn.children[0];
+							var oldTime = jb.innerText;
+							jb.innerText = (parseInt(oldTime) + 1);
+						} else {
+							btn.style.backgroundColor = '#86D79C';
+							var oldQuestionSeq = btn.innerHTML;
+							btn.innerHTML = oldQuestionSeq + '<span class="mui-badge" style="color: white;font-weight: bold;float: right;margin-top:-8px!important;margin-right: -13px!important;display:none">1</span>';
+						}
+					}
+				}
+				/**
+				 * 初始化Dom
+				 */
+
+			function initDom() {
+					var chapterId = window.self.chapterId;
+					var dataIsAll = window.self.dataIsAll;
+					
+					var jieTempHtml = document.getElementById("template-question-list-id").innerHTML;
+					var tiTempHtml = document.getElementById("template-question-id").innerHTML;
+					var tiNoanswerTempHtml = document.getElementById("template-question-noanswer-id").innerHTML;
+					
+					queryQuestions(chapterId, function(serviceObj) {
+						plus.nativeUI.closeWaiting();
+						window.questionList = serviceObj;
+						var jieSize = window.questionList.length / 100;
+						var mo = window.questionList.length % 100;
+						if (mo > 0) {
+							jieSize += 1;
+						}
+						jieSize = parseInt(jieSize); //整数节
+						var htmlStr = '';
+						for (var i = 0; i < jieSize; i++) {
+							//绘制“节”
+							var k = i * 100 + 1;
+							var j = (i + 1) * 100;
+							if (k == 1) {
+								k = "00" + k.toString();
+							}
+							var jie = k + '题——' + j + '题';
+							htmlStr += render(jieTempHtml, {
+								jie: jie
+							});
+							k = parseInt(k);
+							//绘制“题”
+							for (var m = 0; m < 100; m++) {
+								try {
+									var km = k + m - 1;
+									var question = window.questionList[km];
+									var jieId = (i + 1);
+									question.jieId = jieId
+									if (question.answerTime == 0) {
+										htmlStr += render(tiNoanswerTempHtml, question);
+									} else {
+										htmlStr += render(tiTempHtml, question);
+									}
+								} catch (e) {}
+							}
+							htmlStr += '</div></li>';
+						}
+						document.getElementById("outer-id").innerHTML = htmlStr;
+					},dataIsAll == 'true'?true:false);
+				}
+				/**
+				 * 点击试题
+				 */
+
+			function chapterTapEvent() {
+				mui('#outer-id').on('tap', 'button', function() {
+					var questionId = this.getAttribute('data-id');
+					var seq = this.getAttribute('data-seq-id');
+					if (questionId) {
+						var jieId = this.getAttribute('data-jie-id');
+						plus.nativeUI.showWaiting('加载数据中 ...');
+						if(window.self.dataIsAll == 'true'){
+							mui.openWindow({
+								id: 'question-win',
+								url: 'question-one.html',
+								show:{
+									duration:200
+								},
+								waiting:{
+									autoShow:false
+								},
+								extras: {
+									questionId: questionId,
+									jieId: jieId,
+									sectionId: window.chapterId,
+									seq: seq
+								}
+							});
+						}else{
+							mui.openWindow({
+								id: 'question-win',
+								url: 'question.html',
+								show:{
+									duration:200
+								},
+								waiting:{
+									autoShow:false
+								},
+								extras: {
+									questionId: questionId,
+									jieId: jieId,
+									sectionId: window.chapterId,
+									seq: seq
+								}
+							});
+							
+						}
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

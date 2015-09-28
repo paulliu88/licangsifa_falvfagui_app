@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<title>温馨提示</title>
+				<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.wenzi {
+				font-size: 18px;
+				line-height: 30px;
+				margin-top: 20px;
+				padding: 0px 20px;
+			}
+		</style>
+		
+	</head>
+
+	<body style="background:#ff8a00;">
+		<header class="mui-bar mui-bar-nav" style="background:#ff8a00;">
+						<div style="margin-top: -5px;">
+			<h1 class="mui-title" style="color:white;">温馨提示</h1></div>
+		</header>
+		<div class="mui-content" style="background:#ff8a00;">
+			<div style="width: 100%;">
+				<div class="wenzi">亲爱的用户您好：<br/>
+					<p style="text-indent:2em;color:black;line-height:15px;">您的授权已经到期，暂时停止使用，如需继续使用，请点击电话图标直接咨询。</p>
+					<img src="../images/tishi.png" style="width: 100%;height: auto;" />
+					<span style="position:absolute;margin-left:10px;bottom: 45px;" id="phone-id">
+						<img src="../images/phone1.png" style="width:50px;">点我咨询哦！
+					</span>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			mui.plusReady(function(){
+				document.getElementById("phone-id").addEventListener('tap',function(){
+					call();
+				})
+			});
+			function call() {
+				//切换到拨打电话界面，但是不会直接拨打
+				
+				//plus.device.dial("153",false);
+				//此方法可直接拨打电话
+				// 导入Activity、Intent类
+				var Intent = plus.android.importClass("android.content.Intent");
+				var Uri = plus.android.importClass("android.net.Uri");
+				// 获取主Activity对象的实例
+				var main = plus.android.runtimeMainActivity();
+				// 创建Intent
+				var uri = Uri.parse("tel:053258703999"); // 这里可修改电话号码
+				var call = new Intent("android.intent.action.CALL", uri);
+				// 调用startActivity方法拨打电话
+				main.startActivity(call);
+			}
+			 //首页返回键处理
+			 //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+			var first = null;
+			mui.back = function() {
+				//首次按键，提示‘再按一次退出应用’
+				if (!first) {
+					first = new Date().getTime();
+					mui.toast('再按一次退出应用');
+					setTimeout(function() {
+						first = null;
+					}, 1000);
+				} else {
+					if (new Date().getTime() - first < 1000) {
+						plus.runtime.quit();
+					}
+				}
+			} 
+		</script>
+	</body>
+
+</html>

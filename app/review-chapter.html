@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.mui-ellipsis {
+				font-size: 18px;
+				font-weight: 1000 !important;
+			}
+			.my-content-top {
+				margin-top: 30px !important;
+			}
+			.my-btn-shoucang {
+				margin-top: 11px;
+				border: 1px solid white;
+				font-size: 13px;
+				padding: 1px 3px;
+				border-radius: 5px;
+				color: white;
+			}
+			.my-btn-shoucang:active {
+				color: lightgray;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<div style="margin-top: -5px;">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 id="title" class="mui-title" style="margin-left:-10%!important"></h1>
+				<a id="qingkong-id" class="mui-btn mui-btn-danger mui-pull-right my-btn-shoucang">清空</a>
+			</div>
+		</header>
+		<div class="mui-content">
+			<div class="mui-card my-content-top">
+				<ul class="mui-table-view" id="list">
+				</ul>
+			</div>
+		</div>
+		<script type="text/html" id="template-chapter-id">
+			<!--<li class="mui-table-view-cell mui-checkbox mui-left">
+						<input name="checkbox" type="checkbox">Item 8
+					</li>-->
+			<li class="mui-table-view-cell mui-media">
+				<!--<input data-chapter-id="{chapterId}" name="checkbox" type="checkbox" class="my-checkbox" style="display: inline-block;padding-top: 5px;">-->
+				<a data-href="review-resolution.html" data-chapter-id="{chapterId}" data-type="{type}" data-name="{name}" style="padding-top: 18px;">
+					<span class="mui-pull-right"><span style="font-size: 14px;">{count}道</span><span class="mui-icon mui-icon-forward "></span></span>
+					<div class="mui-media-body" style="margin-left: 0px;padding-left: 0px;">
+						<p class='mui-ellipsis' style="color: black;">
+							{name}
+						</p>
+					</div>
+				</a>
+			</li>
+		</script>
+
+		<!--
+        	时间：2015-04-13
+        	描述：
+        -->
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/routes.js"></script>
+		<script src="../js/service.js"></script>
+		<script src="../js/app.js"></script>
+
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				updateTitle();
+				var self = plus.webview.currentWebview();
+				window.courseId = self.courseId;
+				window.type = self.type;
+				initQingkong();
+				initDom();
+				sectionATapEvent();
+				eventClearBank();
+			});
+
+			function initQingkong() {
+					if (window.type == '1') {
+						document.getElementById("qingkong-id").innerHTML = '清空所有收藏';
+						document.getElementById("qingkong-id").setAttribute('data-type-text', '收藏');
+					} else {
+						document.getElementById("qingkong-id").innerHTML = '清空所有错题';
+						document.getElementById("qingkong-id").setAttribute('data-type-text', '错题');
+					}
+				}
+				/**
+				 * 右上角菜单点击事件（收藏本、错题本）
+				 */
+
+			function sectionATapEvent() {
+					mui('#list').on('tap', 'a', function() {
+						var chapterId = this.getAttribute('data-chapter-id');
+						var href = this.getAttribute('data-href');
+						var type = this.getAttribute("data-type");
+						var typeName = this.getAttribute('data-name');
+						if (!href) return;
+						mui.openWindow({
+							id: 'question-' + chapterId,
+							url: href,
+							waiting: {
+								autoShow: false
+							},
+							extras: {
+								sectionId: chapterId,
+								type: type,
+								typeName: typeName
+							}
+						})
+					});
+				}
+				/**
+				 * 清空题库
+				 */
+
+			function eventClearBank() {
+					document.getElementById("qingkong-id").addEventListener('tap', function() {
+						/*
+						var chapterIds = [];
+						var myCheckboxDoms = document.getElementsByClassName('my-checkbox');
+						for(var i=0;i<myCheckboxDoms.length;i++){
+							var myCheckboxDom = myCheckboxDoms[i];
+							var chapterId =  myCheckboxDom.getAttribute('data-chapter-id');
+							if(myCheckboxDom.getAttribute('checked') == 'checked'){
+								chapterIds.push(chapterId);
+							}
+						}
+						*/
+						var typeText = this.getAttribute('data-type-text');
+						var btnArray = ['是', '否'];
+						mui.confirm('清空' + typeText + '后不能恢复，确认清空吗？', '', btnArray, function(e) {
+							if (e.index == 0) {
+								var idCard = window.localStorage.getItem('phone');
+								mui.ajax(Routes.urls.collection.clearBank, {
+									data: {
+										type: window.type,
+										idCard: idCard
+											//										,
+											//										chapterIdStr:chapterIds.join(',')
+									},
+									type: 'post',
+									success: function() {
+										mui.toast(typeText + '已清空');
+										document.getElementById('list').innerHTML =
+											'<li class="mui-table-view-cell mui-media"><div class="mui-media-body" style="text-align: center;">' +
+											'<p class="mui-ellipsis" style="">没有数据</p></div>	</li>';
+									}
+								});
+							}
+						});
+					});
+				}
+				/**
+				 * 更新标题
+				 */
+
+			function updateTitle() {
+					var self = plus.webview.currentWebview();
+					window.barTitle = self.barTitle;
+					if (window.barTitle) {
+						var titleDom = document.getElementById('title');
+						titleDom.innerHTML = window.barTitle;
+					}
+				}
+				/**
+				 * 初始化Dom
+				 */
+
+			function initDom() {
+				var courseId = window.courseId;
+				var type = window.type;
+				var scriptCourse = document.getElementById('template-chapter-id');
+				var template = scriptCourse.innerHTML;
+				var ct = document.getElementById('list');
+				/* 联网 或者 不联网的处理，为了实现错题和收藏的同步，只能在线存储数据 */
+				var isNetOk = toastNetworkInfo();
+				var categoryCode = '0001';
+				if (isNetOk) { // 联网的情况，先离线服务器数据，再关联本地collect表查询即可
+					var idCard = window.localStorage.getItem('phone');
+					mui.ajax(Routes.urls.collection.load, {
+						data: {
+							type: type,
+							categoryCode: categoryCode,
+							idCard: idCard
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							if (data && data.length > 0) {
+								saveCollectFromRemote(data, type, categoryCode, function() {
+									queryCourseCount(courseId, type, function(rows) {
+										var htmlStr = '';
+										if (rows.length < 1) return;
+										ct.innerHTML = '';
+										for (var i = 0; i < rows.length; i++) {
+											var row = rows[i];
+											row.chapterId = row.code;
+											row.type = type;
+											htmlStr += render(template, row);
+										}
+										ct.innerHTML = htmlStr;
+										plus.nativeUI.closeWaiting();
+									});
+								});
+							} else {
+								plus.nativeUI.closeWaiting();
+								ct.innerHTML = '<li class="mui-table-view-cell mui-media"><div class="mui-media-body" style="text-align: center;">' +
+									'<p class="mui-ellipsis" style="">没有数据</p></div>	</li>';
+							}
+						},
+						error: function() {}
+					});
+				} else { //不联网的情况，显示一条提示在最上面
+					queryCourseCount(courseId, type, function(rows) {
+						var htmlStr = '<li class="mui-table-view-cell mui-media">' +
+							'<a style="height: 60px;padding-top: 20px;">' +
+							'<div class="mui-media-body">' +
+							'<p class="mui-ellipsis" style="color:red"><span class="mui-icon mui-icon-closeempty"></span>&nbsp;&nbsp;联网可以同步数据</p>' +
+							'</div>' +
+							'</a>' +
+							'</li>';
+						if (rows.length < 1) {
+							ct.innerHTML = htmlStr;
+							return;
+						}
+						ct.innerHTML = '';
+						for (var i = 0; i < rows.length; i++) {
+							var row = rows[i];
+							row.chapterId = row.code;
+							row.type = type;
+							htmlStr += render(template, row);
+						}
+						ct.innerHTML = htmlStr;
+						plus.nativeUI.closeWaiting();
+					});
+				}
+				return; // 下面是原先的查询逻辑
+				queryCourseCount(courseId, type, function(rows) {
+					var htmlStr = '';
+					if (rows.length < 1) return;
+					ct.innerHTML = '';
+					for (var i = 0; i < rows.length; i++) {
+						var row = rows[i];
+						row.chapterId = row.code;
+						row.type = type;
+						htmlStr += render(template, row);
+					}
+					ct.innerHTML = htmlStr;
+				});
+			}
+		</script>
+	</body>
+
+</html>

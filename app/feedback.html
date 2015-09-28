@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+
+		<style>
+			.feedback p {
+				float: left;
+			}
+			.feedback textarea {
+				height: 100px;
+			}
+			.feedback button {
+				width: 90%;
+				height: 46px;
+				font-size: 17px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<div style="margin-top: -5px;">
+				<a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 id="title" class="mui-title">反馈</h1>
+			</div>
+		</header>
+		<div class="mui-content feedback" style="text-align:center;margin-top:20px;background: white!important;">
+			<div class="mui-page-content">
+				<p>问题和意见</p>
+				<div class="row mui-input-row">
+					<textarea id='question' style="height: 100px;" class="mui-input-clear question" 
+						placeholder="请详细描述你的问题和意见..."></textarea>
+				</div>
+				<p>QQ/邮箱</p>
+				<div class="mui-input-row">
+					<input id='contact' type="text" class="mui-input-clear  contact" placeholder="(选填,方便我们联系你 )" />
+				</div>
+				<button id='submit' type="button" class="mui-btn mui-btn-green">提交</button>
+			</div>
+		</div>
+
+		<!--
+        	作者：HZC
+        	时间：2015-08-18
+        	描述：反馈
+        -->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/routes.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			mui.plusReady(function() {
+				tijiao();
+			});
+			/**
+			 * 提交反馈信息
+			 */
+			function tijiao() {
+				document.getElementById("submit").addEventListener('tap', function() {
+					var question = document.getElementById("question").value.replace(/(^\s*)|(\s*$)/g,'');
+					if(question == '') {
+						mui.toast('请填写问题和意见');
+						return;
+					}
+					var contact = document.getElementById("contact").value;
+					mui.ajax(Routes.urls.feedback.submitfeedback, {
+						data: {
+							post: {
+								question: question,
+								contact: contact
+							}
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'POST', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							mui.toast('反馈信息已提交');
+							document.getElementById("question").value = '';
+							document.getElementById('contact').value = '';
+						},
+						error: function(xht, type, errorThrown) {
+							mui.toast('系统错误，请稍候再试');
+						}
+					});
+				});
+			}
+		</script>
+	</body>
+
+</html>

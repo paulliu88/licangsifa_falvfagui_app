@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<title>关于我们</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<div style="margin-top: -5px;">
+				<a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<a id="feedback" class="mui-icon mui-pull-right" style="font-size: 16px;color: white;margin-top: 5px;display: none;">反馈</a>
+				<h1 id="title" class="mui-title">关于我们</h1>
+			</div>
+		</header>
+		<div class="mui-content" style="text-align:center;margin-top:20px;background: white!important;">
+			<p style="font-size:17px;text-indent: 2em;line-height:28px;margin-top:20px;padding:0 20px;text-align:left;color:#666464;">为深入贯彻党的十八大和十八届三中、四中全会精神，进一步提高全区干部依法行政能力，加快推进法治李沧建设进程，根据《李沧区2015年干部培训计划》和全区“六五”普法工作要求，区委组织部、区人力资源和社会保障局、区司法局联合开发了《李沧区干部法律法规学习测试系统》学习软件。该学习软件题库共有2000题，主要包括党的十八大、十八届三中、四中全会议精神和党内法规、干部廉洁自律的有关规定以及公务员依法履职应当掌握的法律法规等内容，旨在通过干部学法用法，带动全民学法守法，努力营造办事依法、遇事找法、解决问题用法、化解矛盾靠法的良好法治氛围。</p>
+			<hr size="1" width="88%" noshade>
+			<div style="margin-top: 15px;text-align:center;width:100%;">
+				<span style="line-height: 22px;font-size:14px;color:lightgray;">
+					作者：尹彬<br>QQ:1052921694<br>
+					欢迎使用<br>青岛市李沧区干部法律法规学习测试系统 <span id="banben-id"></span>版本
+				</span>
+			</div>
+		</div>
+
+		<!--
+    		作者：CHENAL@TOPEDU.INFO
+    		时间：2015-04-15
+    		描述：
+    	-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/routes.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			mui.plusReady(function() {
+				document.getElementById("banben-id").innerHTML = plus.runtime.version;
+				feedback();
+				checkFeedback();
+			});
+			/**
+			 * 打开反馈
+			 */
+			function feedback() {
+				document.getElementById("feedback").addEventListener('tap', function() {
+					mui.openWindow({
+						id: 'feedback',
+						url: 'feedback.html'
+					})
+				});
+			}
+
+			/**
+			 * 检查反馈服务是否已经启动 
+			 */
+			function checkFeedback() {
+				mui.ajax(Routes.urls.feedback.check, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						if(data[true]) {
+							document.getElementById("feedback").style.display = 'block';
+						}
+					},
+					error: function(xht, type, errorThrown) {
+					}
+				});
+			}
+
+			function callTop() {
+				//切换到拨打电话界面，但是不会直接拨打
+				//				plus.device.dial("4006765291",false);
+				//此方法可直接拨打电话
+				// 导入Activity、Intent类
+				var Intent = plus.android.importClass("android.content.Intent");
+				var Uri = plus.android.importClass("android.net.Uri");
+				// 获取主Activity对象的实例
+				var main = plus.android.runtimeMainActivity();
+				// 创建Intent
+				var uri = Uri.parse("tel:4006765291"); // 这里可修改电话号码
+				var call = new Intent("android.intent.action.CALL", uri);
+				// 调用startActivity方法拨打电话
+				main.startActivity(call);
+			}
+
+			function callAstroway() {
+				//切换到拨打电话界面，但是不会直接拨打
+				//				plus.device.dial("0532-58701631",false);
+				//此方法可直接拨打电话
+				// 导入Activity、Intent类
+				var Intent = plus.android.importClass("android.content.Intent");
+				var Uri = plus.android.importClass("android.net.Uri");
+				// 获取主Activity对象的实例
+				var main = plus.android.runtimeMainActivity();
+				// 创建Intent
+				var uri = Uri.parse("tel:0532-58701631"); // 这里可修改电话号码
+				var call = new Intent("android.intent.action.CALL", uri);
+				// 调用startActivity方法拨打电话
+				main.startActivity(call);
+			}
+		</script>
+	</body>
+
+</html>

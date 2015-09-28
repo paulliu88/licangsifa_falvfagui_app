@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<script src="js/scale.js"></script>
+		<title>学习目录</title>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/iconfont.css">
+
+		<style>
+			html,
+			body {
+				background-repeat: no-repeat;
+			}
+			#list {
+				/*避免导航边框和列表背景边框重叠，看起来像两条边框似得；*/
+				
+				margin-top: -1px;
+			}
+			.mui-table-view:before {
+				height: 0px !important;
+			}
+			.mui-table-view:after {
+				height: 0px !important;
+			}
+			.kaishi {
+				width: 100px;
+				height: 30px;
+				border-radius: 4px;
+				margin-left: auto;
+				margin-right: auto;
+				padding-top: 6px;
+				background-color: red;
+				color: white;
+				font-size: 14px;
+			}
+			.biaoti {
+				word-wrap: break-word;
+				word-break: normal;
+				white-space: normal;
+				height: 50px;
+				padding-right: 25px;
+				font-size: 17px;
+				color: #b70016;
+				font-weight: bolder;
+				line-height: 60px;
+				text-align: center;
+				z-index: 1;
+			}
+			.zhang {
+				height: 60px;
+				width: 80%;
+				margin: 0 auto;
+				border: 1px solid lightgray;
+				border-radius: 6px;
+				/*background-color: gray;*/
+			}
+			.zhang:active {
+				background-color: #F0F0F0;
+			}
+			.mui-media-li-self {
+				margin-top: 10px;
+			}
+			.jindulan {
+				height: 100%;
+				background-color: #428bca;
+				border-bottom-left-radius: 4px;
+				border-top-left-radius: 4px;
+			}
+			.jindu {
+				text-align: center;
+				font-size: 12px;
+				margin: 0 auto;
+				width: 78%;
+				height: 25px;
+				border-radius: 4px;
+				background-color: #E2E6E5;
+			}
+			.my-course-img {
+				padding-top: 110px !important;
+				padding-bottom: 80px !important;
+				background-size: 100% 150px;
+				background-repeat: no-repeat;
+			}
+			.my-mui-table-view {
+				background-color: #efeff4;
+			}
+			.mui-table-view-cell:after {
+				height: 0px !important;
+				line-height: 0px !important;
+			}
+			.ul li {
+				text-align: center!important;
+			}
+			footer {
+				position: absolute;
+				bottom: 0px;
+				width: 100%;
+				z-index: 1000 !important;
+			}
+			.my-circle {
+				/*height: 70px;
+				width: 70px;
+				border-radius: 40px;*/
+				/*padding-top: 20px;
+				margin-left: 5px;
+				margin-right: 5px;
+				border: 2px solid red;
+				display: inline-block;*/
+				/*display: block;*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="offCanvasContentScroll" class="mui-content">
+			<div class="mui-scroll" id="my-scroll">
+				<div id="topPopover" style="margin-top:100px;margin-bottom: 50px!important;">
+					<div style="width:100%;text-align: center;">
+						<a id="xuexi" data-course-id="" data-title="学习题库" class="my-circle" data-href="index-subpage-content.html" data-type='2' style="color: red;">
+							<!--<i class="mui-icon icon iconfont icon-zhangben" style="margin-right: 10px;"></i>错题本-->
+							<img src="images/index/index-xxtk.png" style="width: 35%;margin-right: 30px" />
+						</a>
+						<a id="monikao" data-course-id="" data-title="模拟测试" class="my-circle" data-href="app/letest-prev.html" data-type='0' style="color:#0062CC;">
+							<!--<i class="mui-icon icon iconfont icon-zhangben" style="margin-right: 10px;"></i>模拟考-->
+							<img src="images/index/index-mn.png" style="width: 35%;" />
+						</a>
+					</div>
+					<div style="width:100%;text-align: center;margin-top: 40px;">
+						<a id="shoucangben" data-course-id="" data-title="收藏题库" class="my-circle" data-href="app/review-chapter.html" data-type='1' style="color:#008246;">
+							<!--<i class="mui-icon icon iconfont icon-shu" style="margin-right: 10px;"></i>收藏本-->
+							<img src="images/index/index-sc.png" style="width: 35%;margin-right: 30px;" />
+						</a>
+						<a id="cuotiben" data-course-id="" data-title="错题题库" class="my-circle" data-href="app/review-chapter.html" data-type='2' style="color: red;">
+							<!--<i class="mui-icon icon iconfont icon-zhangben" style="margin-right: 10px;"></i>错题本-->
+							<img src="images/index/index-ct.png" style="width: 35%;" />
+						</a>
+					</div>
+					<ul id="list" style="padding-left: 0 !important;margin-top:30px;">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script type="text/html" id="template-chapter-id">
+			<li class="mui-table-view-cell mui-media mui-col-xs-12 mui-media-li-self">
+				<a href="app/question-prev.html" data-title="{name}" data-chapter-id='{code}'>
+					<div class="zhang">
+						<!--<img src="images/biao.png" height="50%" style="position: absolute;left:50px;top:25px;" />-->
+						<div class=" biaoti">
+							{name}
+						</div>
+					</div>
+				</a>
+			</li>
+		</script>
+
+		<!--
+        	时间：2015-04-10
+        	描述：
+        -->
+
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/service.js"></script>
+		<script src="js/routes.js"></script>
+		<script src="js/sync.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				window.self = plus.webview.currentWebview();
+				if (!window.self.courseId) {
+					window.self.courseId = '0001';
+				}
+				autoLogin();
+				initCourseId();
+				rightBarTapEvent();
+				//查询所有课程，加载课程菜单
+				//				queryAllCourse(function(rows) {
+				//					initChapterDom();
+				//					chapterTapEvent();
+				//				});
+			});
+			/**
+			 * 启动自动登录
+			 */
+			function autoLogin() {
+					var phone = window.localStorage.getItem("phone");
+					if (phone == null) {
+						window.localStorage.setItem('isAlreadyLogin', false);
+						return;
+					}
+					mui.ajax(Routes.urls.user.loginForPufa, {
+						data: {
+							username: phone
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							if (data && data.success) {
+								//记录用户登录信息
+								window.localStorage.setItem('isAlreadyLogin', true);
+								window.localStorage.setItem("phone", phone);
+								window.localStorage.setItem('userdTime',data.message);
+								updateUserInfoToLocal();
+							} else {
+								window.localStorage.setItem('isAlreadyLogin', false);
+								mui.toast(data.message);
+							}
+						}
+					});
+				}
+				/**
+				 *初始化章
+				 */
+
+			function initChapterDom() {
+					queryCategory(window.self.courseId, function(rows) {
+						var scriptCourse = document.getElementById('template-chapter-id');
+						var template = scriptCourse.innerHTML;
+						var htmlStr = '';
+						for (var i = 0; i < rows.length; i++) {
+							var row = rows[i];
+							htmlStr += render(template, row);
+						}
+						var ct = document.getElementById('list');
+						ct.innerHTML = htmlStr;
+						//					mui('#offCanvasContentScroll').scroll().scrollTo(0, 0);
+						//					document.getElementById("list").style.backgroundImage = window.myimage;
+					});
+				}
+				/**
+				 * 点击事件（收藏本、错题本）
+				 */
+
+			function rightBarTapEvent() {
+					eventXuexi();
+					eventShoucang();
+					eventCuoti();
+					eventMoni();
+				}
+				/**
+				 *  学习题库事件
+				 */
+
+			function eventXuexi() {
+					document.getElementById("xuexi").addEventListener('tap', function() {
+						var href = this.getAttribute('data-href');
+						mui.openWindow({
+							id: 'index-subpage-content-win',
+							url: href,
+							show: {
+								duration: 200
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+					});
+				}
+				/**
+				 * 收藏事件
+				 */
+
+			function eventShoucang() {
+					document.getElementById("shoucangben").addEventListener('tap', function() {
+						// 收藏、错题，此等有规律的处理
+						var courseId = this.getAttribute('data-course-id');
+						var href = this.getAttribute('data-href');
+						var type = this.getAttribute('data-type');
+						var title = this.getAttribute('data-title');
+						plus.nativeUI.showWaiting('加载数据中 ...');
+						mui.openWindow({
+							id: 'bar-' + courseId,
+							url: href,
+							show: {
+								duration: 200
+							},
+							waiting: {
+								autoShow: false
+							},
+							extras: {
+								barTitle: title,
+								courseId: courseId,
+								type: type
+							}
+						});
+					})
+				}
+				/**
+				 * 错题事件
+				 */
+
+			function eventCuoti() {
+					document.getElementById("cuotiben").addEventListener('tap', function() {
+						// 收藏、错题，此等有规律的处理
+						var courseId = this.getAttribute('data-course-id');
+						var href = this.getAttribute('data-href');
+						var type = this.getAttribute('data-type');
+						var title = this.getAttribute('data-title');
+						plus.nativeUI.showWaiting('加载数据中 ...');
+						mui.openWindow({
+							id: 'bar-' + courseId,
+							url: href,
+							show: {
+								duration: 200
+							},
+							waiting: {
+								autoShow: false
+							},
+							extras: {
+								barTitle: title,
+								courseId: courseId,
+								type: type
+							}
+						});
+					})
+				}
+				/**
+				 * 模拟事件
+				 */
+
+			function eventMoni() {
+				document.getElementById("monikao").addEventListener('tap', function() {
+					var title = this.getAttribute('data-title');
+					var chapterId = '0001';
+					var href = 'app/letest-prev.html';
+					mui.openWindow({
+						id: 'prev-win-' + chapterId,
+						url: href,
+						show: {
+							duration: 200
+						},
+						waiting: {
+							autoShow: false
+						},
+						extras: {
+							name: title,
+							sectionId: chapterId,
+							chapterId: chapterId,
+							time: 100
+						}
+					});
+				})
+			}
+
+			function initCourseId() {
+					var cuotiben = document.getElementById('cuotiben');
+					var shoucangben = document.getElementById('shoucangben');
+					var monikao = document.getElementById('monikao');
+					cuotiben.setAttribute("data-course-id", window.self.courseId);
+					shoucangben.setAttribute('data-course-id', window.self.courseId);
+					monikao.setAttribute('data-course-id', window.self.courseId);
+				}
+				//首页返回键处理
+				//处理逻辑：1秒内，连续两次按返回键，则退出应用；
+			var first = null;
+			mui.back = function() {
+				//首次按键，提示‘再按一次退出应用’
+				if (!first) {
+					first = new Date().getTime();
+					mui.toast('再按一次退出应用');
+					setTimeout(function() {
+						first = null;
+					}, 1000);
+				} else {
+					if (new Date().getTime() - first < 1000) {
+						plus.runtime.quit();
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>

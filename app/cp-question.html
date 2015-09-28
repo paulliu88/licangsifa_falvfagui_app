@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>exam</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/iconfont.css">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.youbar {
+				margin-right: 40px !important;
+			}
+			.mui-table-view:before {
+				height: 0px !important;
+			}
+			.mui-table-view:after {
+				height: 0px !important;
+			}
+			.my-btn-shoucang {
+				margin-top: 11px;
+				border: 1px solid white;
+				font-size: 13px;
+				padding: 1px 3px;
+				border-radius: 5px;
+				color: white;
+			}
+			.my-btn-shoucang:active {
+				color: lightgray;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<div style="margin-top: -5px;">
+				<a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<a id="shoucang" data-section-id='' data-name="收藏本" data-href='' class="youbar mui-pull-right my-btn-shoucang">
+				收藏本题
+			</a>
+				<h1 id="title" class="mui-title"></h1>
+			</div>
+		</header>
+		<footer class="mui-bar mui-bar-footer">
+			<ul class="mui-pager" style="margin-top: 5px;">
+				<li id="pre-id" class="mui-disabled">
+					<a> &nbsp;&nbsp;上&nbsp;&nbsp;一&nbsp;&nbsp;题&nbsp;&nbsp; </a>
+				</li>
+				<li id="next-id" style="margin-left: 50px;">
+					<a> &nbsp;&nbsp;下&nbsp;&nbsp;一&nbsp;&nbsp;题&nbsp;&nbsp; </a>
+				</li>
+			</ul>
+		</footer>
+		<div class="mui-content" id="my-content-id">
+			<div class="my-pagination" style="margin-top: 20px;" id="list">
+				<ul class="mui-table-view">
+				</ul>
+			</div>
+
+		</div>
+		<script type="text/html" id="template-question-id">
+			<div class="mui-card duoxuan" data-id="{id}" style="padding-top: 6px;padding-bottom: 6px;display: block;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<b style="color: blue;">{seq}({type})</b>: {name}
+					</li>
+		</script>
+		<script type="text/html" id="template-option-id">
+			<li class="mui-table-view-cell mui-{inputType} mui-left my-auto-next" style="border-left: 5px solid white;">
+				<input class="question" name="{inputName}" data-key="{key}" type="{inputType}" data-checked="false" data-label="{label}">
+				<span>{label}：{name}</span>
+			</li>
+		</script>
+		<script type="text/html" id="template-btn-id">
+			<li>
+				<div style="padding: 20px 30px 20px 30px;">
+					<button type="button" style="margin: 10px 0px;padding: 5px 10px;" class="mui-btn mui-btn-primary mui-btn-block" onclick="answerBtnEvent(this);">查看答案</button>
+					<span></span>
+				</div>
+			</li>
+		</script>
+		<script type="text/html" id="template-answer-id">
+			<p style="display: block;">正确答案：<span style="color:#4e9600;">{questionAnswer}</span>
+			</p>
+		</script>
+
+		<!--
+        	时间：2015-04-10
+        	描述：
+        -->
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/routes.js"></script>
+		<script src="../js/service.js"></script>
+		<script src="../js/app.js"></script>
+		<script type="text/javascript">
+			/*
+						mui.init();
+						mui.plusReady(function() {
+			//				plus.nativeUI.closeWaiting()
+							var self = plus.webview.currentWebview();
+							var sectionId = self.sectionId;
+							var questionId = self.questionId;
+							var seq = self.seq;
+							var jieId = self.jieId;
+							var jie = jieId - 1; //从0开始
+							window.indexId = seq - (jie * 100);
+							window.startId = (jie * 100);
+							window.endId = window.startId + 99;
+							myOnReady(sectionId);
+						});
+						*/
+			window.onload = function() {
+				var sectionId = '00010001';
+				var questionId = '1';
+				var seq = 1;
+				var jieId = 1;
+				var jie = jieId - 1; //从0开始
+				window.indexId = seq - (jie * 100);
+				window.startId = (jie * 100);
+				window.endId = window.startId + 99;
+				myOnReady(sectionId);
+			};
+			/**
+			 * 查询答案
+			 */
+			function answerBtnEvent(obj) {
+					grade();
+					var self = obj;
+					self.style.display = 'none';
+					//获取题下的所有选项
+					var inputs = self.parentNode.parentNode.parentNode.getElementsByClassName('question');
+					var uAL = [];
+					for (var i = 0; i < inputs.length; i++) {
+						//单个选项
+						var option = inputs[i];
+						var key = option.getAttribute('data-key');
+						if (key == 1) {
+							var dd = option.nextSibling.nextSibling;
+							var userAnswer = option.getAttribute('data-label');
+							uAL.push(userAnswer);
+						}
+					}
+					var answer = uAL.join(',');
+					self.nextSibling.nextSibling.innerHTML = '正确答案：' + answer;
+				}
+				/**
+				 * 单选题，选着之后自动跳转下一题
+				 */
+
+			function autoNextEvent() {
+					//				
+					//					mui('#list').on('tap', '.my-auto-next', function() {
+					//						var self = this;
+					//						var timeout = setTimeout(function() {
+					//							var inputType = self.children[0].getAttribute('type');
+					//							if (inputType == 'radio') {
+					//								next();
+					//							}
+					//							clearTimeout(timeout);
+					//						}, 500);
+					//					});
+				}
+				/**
+				 * 上一题和下一题按钮事件
+				 */
+
+			function preAndNextEvent() {
+				var preDom = document.getElementById("pre-id");
+				preDom.addEventListener('tap', function() {
+					prev();
+				});
+				var nextDom = document.getElementById("next-id");
+				nextDom.addEventListener('tap', function() {
+					next();
+				});
+			}
+			var childPagination = null;
+			/**
+			 * 隐藏所有题
+			 */
+			function hideAll() {
+					for (var i = 0; i < childPagination.length; i++) {
+						var child = childPagination[i];
+						child.style.display = 'none';
+					}
+				}
+				/**
+				 * 显示第一题
+				 */
+
+			function showFirst() {
+				plus.nativeUI.closeWaiting();
+				show(0, false);
+			}
+			window.currentNo = 0;
+			var questions = [];
+			var pre_questions = [];
+			/**
+			 * 显示某题,如果b为true，则只记录当前question
+			 * @param {Object} idx
+			 */
+			function show(idx, b) {
+					////					var __questionList = window.serviceObj.getQuestion(idx);
+					//					var __questionC = window.serviceObj.getQuestion(idx);
+					//					console.log(JSON.stringify(__questionC))
+					//					window.__question = __questionC;
+					window.__index = idx;
+					//保存做过的题（做过的题为显示的当前题的前一个题）
+					hideAll();
+					window.currentNo = idx;
+					for (var i = 0; i < childPagination.length; i++) {
+						if (i == idx) {
+							var child = childPagination[i];
+							child.style.display = 'block';
+						}
+					}
+					if (window.currentNo == 0) {
+						document.getElementById("pre-id").classList.add('mui-disabled');
+					} else {
+						document.getElementById("pre-id").classList.remove('mui-disabled');
+					}
+					if (window.currentNo == (childPagination.length - 1)) {
+						document.getElementById("next-id").classList.add('mui-disabled');
+					} else {
+						document.getElementById("next-id").classList.remove('mui-disabled');
+					}
+				}
+				/**
+				 * 点击上一题时，设置上一题按钮样式
+				 */
+
+			function preBtnEffect() {
+					if (window.currentNo <= 1) {
+						document.getElementById("pre-id").classList.add('mui-disabled');
+					}
+					if (window.currentNo < childPagination.length) {
+						document.getElementById("next-id").children[0].innerHTML = '&nbsp;&nbsp;下&nbsp;&nbsp;一&nbsp;&nbsp;题&nbsp;&nbsp; ';
+					}
+				}
+				/**
+				 * 点击下一题时，设置下一题按钮样式
+				 */
+
+			function nextBtnEffect() {
+					if (window.currentNo >= 0 && (window.serviceObj.questionList.length > 1)) {
+						document.getElementById("pre-id").classList.remove('mui-disabled');
+					}
+					if (window.currentNo >= (childPagination.length - 2)) {
+						//					document.getElementById("next-id").children[0].innerHTML = '&nbsp;&nbsp;提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交&nbsp;&nbsp;';
+					}
+				}
+				/**
+				 * 显示前一题
+				 * @param {Object} event
+				 */
+
+			function prev(event) {
+					grade();
+					preBtnEffect();
+					if (window.currentNo) {
+						window.currentNo = window.currentNo - 1;
+						show(window.currentNo, false);
+						var _self = childPagination[currentNo]
+						var _questionId = _self.getAttribute("data-id");
+						var questionAll = window.serviceObj.getQuestion(_questionId);
+						window.__question = questionAll;
+						updateBookmarkIco(questionAll);
+					}
+				}
+				/**
+				 * 显示下一题
+				 * @param {Object} event
+				 */
+
+			function next(event) {
+					grade();
+					nextBtnEffect();
+					if (window.currentNo < (childPagination.length - 1)) {
+						window.currentNo = window.currentNo + 1;
+						show(window.currentNo, false);
+						var _self2 = childPagination[currentNo]
+						var _questionId2 = _self2.getAttribute("data-id");
+						var questionAll = window.serviceObj.getQuestion(_questionId2);
+						window.__question = questionAll;
+						updateBookmarkIco(questionAll);
+						return false;
+					}
+				}
+				//注册左滑和右滑切换试题事件
+			window.addEventListener("swiperight", prev);
+			window.addEventListener("swipeleft", next);
+			/**
+			 * 判分、错题
+			 * @param {Object} currentNo
+			 */
+			function grade() {
+					var _questionDiv = childPagination[window.__index];
+					var _questionId = _questionDiv.getAttribute("data-id");
+					var inputs = _questionDiv.children[0].getElementsByClassName('question');
+					var userAnswerList = [];
+					var isAnswer = false;
+					for (var k = 0; k < inputs.length; k++) {
+						var option = inputs[k];
+						if (option.checked) {
+							isAnswer = true;
+							userAnswerList.push(option.getAttribute("data-label"));
+						}
+					}
+					if (!isAnswer) {
+						return;
+					}
+					var ret = [];
+					var options = window.__question.options;
+					for (var i = 0; i < options.length; i++) {
+						var option = options[i];
+						if (option.key == 1) {
+							ret.push(option.label);
+						}
+					}
+					var __answer = ret.join('');
+					var __uanswer = userAnswerList.join('');
+					delteCollectLocalDbAndServer(window.__question.question.id);
+					if (__uanswer != __answer) {
+						window.__question.question.isOk = false;
+						window.__question.question.userAnswer = __uanswer;
+						if (!window.__question.question.isOk) saveCollectLocalDbAndServer(window.__question.question);
+					}
+					//					console.log(JSON.stringify(window.__question.question))
+					var qindex = 0;
+					//不包括最后一题
+					if (window.__index != 0) {
+						//						var isAnswer = false;
+						qindex = window.__index;
+						var q = childPagination[qindex];
+						//						var inputs = q.getElementsByClassName('question');
+						//						var userAnswerList = [];
+						//						for (var m = 0; m < inputs.length; m++) {
+						//							//单个选项
+						//							var option = inputs[m];
+						//							if (option.checked) {
+						//								isAnswer = true;
+						//								userAnswerList.push(option.getAttribute("data-label"));
+						//							}
+						//						}
+						if (isAnswer) {
+							var isHad = false;
+							for (var k = 0; k < questions.length; k++) {
+								if (qindex == questions[k]) {
+									isHad = true;
+								}
+							}
+							if (!isHad) {
+								//第一次做此题
+								questions.push(qindex);
+								var qId = q.getAttribute('data-id');
+								pre_questions.push(qId);
+								saveQuestionDoTimes(qId);
+								//								grade();
+								var questionList = window.serviceObj.questionList;
+								var questionC = questionList[qindex].question;
+								var isOk = questionC.isOk;
+								if (!isOk) {
+									saveQuestionWrongTimes(qId);
+								}
+							}
+						}
+					}
+					//					if (b) {
+					//						return;
+					//					}
+					return;
+					var userResult = [];
+					for (var i = 0; i < childPagination.length; i++) {
+						var _questionDiv = childPagination[i];
+						var _questionId = _questionDiv.getAttribute("data-id");
+						var inputs = _questionDiv.children[0].getElementsByClassName('question');
+						var userAnswerList = [];
+						var isAnswer = false;
+						for (var k = 0; k < inputs.length; k++) {
+							var option = inputs[k];
+							if (option.checked) {
+								isAnswer = true;
+								userAnswerList.push(option.getAttribute("data-label"));
+							}
+						}
+						if (!isAnswer) {
+							continue;
+						}
+						userResult.push({
+							questionId: _questionId,
+							userAnswerList: userAnswerList
+						});
+					}
+					window.serviceObj.grade(userResult);
+				}
+				/**
+				 * 更新收藏图标，显示当前题是否被收藏
+				 */
+
+			function updateBookmarkIco(questionAll) {
+					var questionId = questionAll.question.id;
+					var hasCollect = questionAll.hasCollect;
+					var shoucangDom = document.getElementById("shoucang");
+					shoucangDom.setAttribute("data-question-id", questionId);
+					if (hasCollect) {
+						shoucangDom.innerHTML = '取消收藏';
+					} else {
+						shoucangDom.innerHTML = '收藏本题';
+					}
+				}
+				//点击收藏，收藏此试题
+
+			function collectEvent() {
+					document.getElementById('shoucang').addEventListener('tap', function() {
+						var _questionId = this.getAttribute('data-question-id');
+						var questionAll = window.serviceObj.getQuestion(_questionId);
+						if (questionAll.hasCollect) {
+							mui.toast('已取消收藏');
+						} else {
+							mui.toast('已添加收藏');
+						}
+						window.serviceObj.updateBookMark(questionAll);
+						updateBookmarkIco(questionAll);
+					});
+				}
+				/**
+				 * 初始化Dom
+				 */
+
+			function initDom() {
+					var tq = document.getElementById('template-question-id').innerHTML;
+					var to = document.getElementById('template-option-id').innerHTML;
+					var tbtn = document.getElementById("template-btn-id").innerHTML;
+					var list = document.getElementById('list');
+					var questionList = window.serviceObj.questionList;
+					var htmlStr = '';
+					for (var i = 0; i < questionList.length; i++) {
+						var all = questionList[i]
+						htmlStr += render(tq, all.question);
+						for (var k = 0; k < all.options.length; k++) {
+							var option = all.options[k];
+							htmlStr += render(to, option);
+						}
+						htmlStr += render(tbtn, all.question);
+						htmlStr += "</ul></div>";
+					}
+					if (htmlStr) list.innerHTML = htmlStr;
+				}
+				/**
+				 * 初始化
+				 * @param {Object} sectionId
+				 */
+
+			function myOnReady(sectionId) {
+				//获取节下的所有试题
+				queryQuestionAll(sectionId, window.startId, function(all) {}, function(serviceObj) {
+					window.serviceObj = serviceObj;
+					window.__question = window.serviceObj.questionList[0];
+					initDom();
+					childPagination = document.getElementsByClassName("my-pagination")[0].children;
+					hideAll();
+					//					showFirst();
+					//if(window.indexId <1){
+					//	window.indexId = 1;
+					//}
+					show((window.indexId - 1), false);
+					updateBookmarkIco(window.serviceObj.questionList[(window.indexId - 1)]);
+					collectEvent();
+					//					autoNextEvent();
+					preAndNextEvent();
+					if (window.serviceObj.questionList.length <= 1) {
+						document.getElementById("next-id").children[0].innerHTML = '&nbsp;&nbsp;提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交&nbsp;&nbsp;';
+					}
+					plus.nativeUI.closeWaiting();
+				});
+			}
+			var old_back = mui.back;
+			mui.back = function() {
+				grade();
+				show(window.currentNo + 1, true);
+				var _questionIds = pre_questions.join(',');
+				var lightLastQuestion = pre_questions.pop();
+				var functionScript = 'try{with(window){updateStatus("' + _questionIds + '")}}catch(e){}';
+				functionScript += 'try{with(window){lightLastBtn("' + lightLastQuestion + '")}}catch(e){}';
+				plus.webview.getWebviewById('question-prev-win').evalJS(functionScript);
+				old_back();
+			};
+		</script>
+	</body>
+
+</html>

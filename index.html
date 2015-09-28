@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<title>法律法规学习测试系统目录页</title>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/iconfont.css">
+		
+
+		<style>
+			html,
+			body {
+				background-repeat: no-repeat;
+			}
+			.title {
+				margin: 35px 15px 10px;
+				margin-bottom: 20px;
+				font-size: 24px;
+				font-weight: 700;
+				color: green;
+			}
+			.title+.content {
+				margin: 10px 15px 35px;
+				color: #bbb;
+				text-indent: 1em;
+				font-size: 14px;
+				line-height: 24px;
+			}
+			#list {
+				/*避免导航边框和列表背景边框重叠，看起来像两条边框似得；*/
+				
+				margin-top: -1px;
+			}
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				left: 6px;
+				width: 150px !important;
+				z-index: 1000000;
+				top: 60px !important;
+			}
+			#topPopover .mui-popover-arrow {
+				right: auto;
+				left: 6px;
+			}
+			.mui-popover {
+				height: 150px;
+			}
+			.mui-table-view:before {
+				height: 0px !important;
+			}
+			.mui-table-view:after {
+				height: 0px !important;
+			}
+			.kaishi {
+				width: 100px;
+				height: 30px;
+				border-radius: 4px;
+				margin-left: auto;
+				margin-right: auto;
+				padding-top: 6px;
+				background-color: red;
+				color: white;
+				font-size: 14px;
+			}
+			.biaoti {
+				word-wrap: break-word;
+				word-break: normal;
+				white-space: normal;
+				height: 90px;
+				padding-right: 25px;
+				font-size: 17px;
+				color: white;
+				font-weight: bolder;
+				line-height: 90px;
+				text-align: right;
+				z-index: 1;
+			}
+			.zhang {
+				height: 70px;
+				width: 90%;
+				margin: 0 auto;
+				border: 1px solid lightgray;
+				border-radius: 6px;
+				background-color: gray;
+			}
+			.zhang:active {
+				background-color: red;
+			}
+			.mui-media-li-self {
+				margin-top: 40px;
+			}
+			.jindulan {
+				height: 100%;
+				background-color: #428bca;
+				border-bottom-left-radius: 4px;
+				border-top-left-radius: 4px;
+			}
+			.jindu {
+				text-align: center;
+				font-size: 12px;
+				margin: 0 auto;
+				width: 78%;
+				height: 25px;
+				border-radius: 4px;
+				background-color: #E2E6E5;
+			}
+			.my-course-img {
+				padding-top: 110px !important;
+				padding-bottom: 80px !important;
+				background-size: 100% 150px;
+				background-repeat: no-repeat;
+			}
+			.my-mui-table-view {
+				background-color: #efeff4;
+			}
+			footer {
+				position: absolute;
+				bottom: 0px;
+				width: 100%;
+				z-index: 1000 !important;
+			}
+			.mui-table-view-cell:after {
+				height: 0px !important;
+				line-height: 0px !important;
+			}
+			.ul li {
+				text-align: center!important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+						<div style="margin-top: -5px;">
+			<a id="person-id" class="mui-icon mui-icon-person  mui-pull-right" style="color:white;font-size:27px!important;font-weight: bolder!important;"> </a>
+			<h1 id="title" class="mui-title" style="color:white;font-size:18px;">法律法规学习测试系统</h1>
+		</div>
+		</header>
+		
+		<!--
+        	时间：2015-04-10
+        	描述：
+        -->
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				subpages: [{
+					url: 'index-subpage.html',
+					id: 'index-subpage-win',
+					styles: {
+						top: '50px',
+						bottom: '0px'
+					}
+				}]
+			});
+			mui.plusReady(function() {
+				plus.navigator.setFullscreen(false);
+				plus.nativeUI.closeWaiting();
+				leftBarTapEvent();
+			});
+			/**
+			 * 左上角个人中心按钮
+			 */
+			function leftBarTapEvent() {
+					document.getElementById("person-id").addEventListener('tap', function() {
+						alreadyLogin(function() {
+							mui.openWindow({
+								id: 'personal-win',
+								url: 'app/personal.html',
+								show: {
+									duration: 200
+								},
+								waiting: {
+									title: '个人中心',
+									options: {
+										width: '200px',
+										height: '100px'
+									}
+								}
+							});
+						}, function() {
+							mui.openWindow({
+								id: 'login-win',
+								url: 'app/login.html',
+								extras: {
+									gotoUrl: '../index.html'
+								},
+								show: {
+									aniShow: 'slide-in-left'
+								},
+								waiting: {
+									title: '登录',
+									options: {
+										width: '200px',
+										height: '100px'
+									}
+								}
+							});
+						});
+					});
+				}
+				//首页返回键处理
+				//处理逻辑：1秒内，连续两次按返回键，则退出应用；
+			var first = null;
+			mui.back = function() {
+				//首次按键，提示‘再按一次退出应用’
+				if (!first) {
+					first = new Date().getTime();
+					mui.toast('再按一次退出应用');
+					setTimeout(function() {
+						first = null;
+					}, 1000);
+				} else {
+					if (new Date().getTime() - first < 1000) {
+						plus.runtime.quit();
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>
