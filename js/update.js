@@ -21,7 +21,7 @@ function update() {
 				return;
 			}
 			plus.ui.confirm(data.note, function(i) {
-				if (0 == i) { // 点击了: 立即更新
+				if (0 == i.index) { // 点击了: 立即更新
 					plus.runtime.openURL(data.url);
 				}
 			}, data.title, ["立即更新", "取　　消"]);

@@ -1,0 +1,92 @@
+{
+	"index-check-version.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"image.html",
+			"pre.html"
+		]
+	},
+	"image.html": {
+		"resources": [
+			"db/option-update.js",
+			"images/2.jpg",
+			"db/question.js",
+			"db/category.js",
+			"images/1.jpg",
+			"db/option.js",
+			"db/material.js",
+			"db/resolution.js",
+			"js/createDb.js",
+			"db/question-update.js"
+		],
+		"refer": [
+			"app/login.html"
+		]
+	},
+	"app/login.html": {
+		"resources": [
+			"js/app.js",
+			"js/service.js",
+			"js/routes.js"
+		],
+		"refer": [
+			"index.html"
+		]
+	},
+	"index.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"css/iconfont.css",
+			"js/update.js",
+			"index-subpage.html",
+			"js/app.js"
+		],
+		"refer": [
+			"index-subpage.html",
+			"app/personal.html"
+		]
+	},
+	"index-subpage.html": {
+		"resources": [
+			"images/index/index-xxtk.png",
+			"js/scale.js",
+			"images/index/index-sc.png",
+			"js/sync.js",
+			"images/index/index-ct.png",
+			"images/index/index-mn.png",
+			"js/service.js",
+			"js/routes.js"
+		],
+		"refer": [
+			"app/review-chapter.html"
+		]
+	},
+	"app/review-chapter.html": {
+		"refer": [
+			"app/review-resolution.html"
+		]
+	},
+	"app/personal.html": {
+		"resources": [
+			"images/person/person-header-tu1.jpg",
+			"images/person/my-person-xitongshezhi.png",
+			"images/person/my-person-xiaoxi.png"
+		],
+		"refer": [
+			"app/msg-center.html",
+			"app/about-us.html"
+		]
+	},
+	"pre.html": {
+		"refer": [
+			"index.html"
+		],
+		"resources": [
+			"images/2.jpg",
+			"images/1.jpg"
+		]
+	}
+}

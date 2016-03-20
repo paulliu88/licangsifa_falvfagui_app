@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>exam</title>
-		<meta name="viewport" content="width=device-width,initial-scale=1.5, maximum-scale=2, user-scalable=no" />
+		<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=2, user-scalable=no" />
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="../css/iconfont.css">
@@ -378,6 +378,7 @@
 				 */
 
 			function initDom() {
+					plus.nativeUI.showWaiting('正在加载...');
 					var tq = document.getElementById('template-question-id').innerHTML;
 					var to = document.getElementById('template-option-id').innerHTML;
 					var tc = document.getElementById("template-correct-id").innerHTML;
@@ -421,6 +422,7 @@
 						childPagination = document.getElementsByClassName("my-pagination")[0].children;
 						hideAll();
 						showFirst();
+						plus.nativeUI.closeWaiting();
 						var indexed = self.indexed; //点击解析上的具体哪个试题获取到的试题的题号
 						if (indexed) {
 							show(indexed - 1);

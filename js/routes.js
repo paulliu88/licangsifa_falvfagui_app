@@ -2,9 +2,9 @@
  * 全局路由配置对象
  */
 (function(w) {
-	var domain = 'http://lcsf.oltop.cn/phone/'; //production
+//	var domain = 'http://lcsf.oltop.cn/phone/'; //production
 	//	var domain = 'http://192.168.1.160:8080/phone/'; // yinbin
-	//	var domain = 'http://192.168.1.123:8080/phone/'; //刘金云
+		var domain = 'http://192.168.1.145:8080/phone/'; //刘金云
 	//	var domain = 'http://lcsf.ccstudy.cn/phone/';//test
 	//	var feedback = 'http://192.168.0.111:8000/';
 	var feedback = 'http://oltop.cn:8000/'; //反馈服务器
@@ -48,6 +48,7 @@
 
 			//  有关于用户的收藏本或者错题本
 			collection: {
+				
 				// 查询 错有的错题或者收藏
 				load: domain + 'LpSyncCtrl.loadCollection.do',
 				// 清空错题题库、收藏题库

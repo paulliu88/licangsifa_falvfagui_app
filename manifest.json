@@ -3,7 +3,7 @@
 	"id": "H5ADD124B",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "李沧干部普法",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.1.3",/*应用版本名称*/
+		"name": "1.1.4",/*应用版本名称*/
 		"code": "83"
 	},
 	"description": "",/*应用描述信息*/
@@ -17,20 +17,16 @@
 		"url": "http://www.dcloud.io"
 	},
 	"permissions": {
-		"Accelerometer": {
-			"description": "访问加速度感应器"
-		},
-		"Audio": {},
+		
+		
 		"Cache": {
 			"description": "管理应用缓存"
 		},
-		"Camera": {
-			"description": "访问摄像头"
-		},
+		
 		"Console": {
 			"description": "跟踪调试输出日志"
 		},
-		"Contacts": {},
+		
 		"Device": {},
 		"Downloader": {
 			"description": "文件下载管理"
@@ -41,27 +37,21 @@
 		"File": {
 			"description": "访问本地文件系统"
 		},
-		"Gallery": {
-			"description": "访问系统相册"
-		},
-		"Geolocation": {},
+		
+		
 		"Invocation": {
 			"description": "使用Native.js能力"
 		},
-		"Messaging": {},
+		
 		"Orientation": {
 			"description": "访问方向感应器"
 		},
-		"Proximity": {
-			"description": "访问距离感应器"
-		},
+		
 		"Storage": {
 			"description": "管理应用本地数据"
 		},
 		
-		"Uploader": {
-			"description": "管理文件上传任务"
-		},
+		
 		"Runtime": {
 			"description": "访问运行期环境"
 		},
@@ -71,8 +61,8 @@
 		"Zip": {
 			"description": "文件压缩与解压缩"
 		},
-		"Barcode": {},
-		"Maps": {},
+		
+		
 		
 		"Push": {},
 		
@@ -101,7 +91,7 @@
 				"keystore": "",/*Android应用打包使用的密钥库文件*/
 				"password": "",/*Android应用打包使用密钥库中证书的密码*/
 				"aliasname": "",/*Android应用打包使用密钥库中证书的别名*/
-				"permissions": ["<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>","<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>","<uses-permission android:name=\"android.permission.GET_TASKS\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.READ_LOGS\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-feature android:name=\"android.hardware.camera.autofocus\"/>","<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>","<uses-permission android:name=\"com.android.launcher.permission.UNINSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>","<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>","<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"com.android.launcher.permission.INSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-permission android:name=\"android.permission.SEND_SMS\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>","<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>","<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>","<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>","<uses-permission android:name=\"android.permission.WRITE_SMS\"/>","<uses-permission android:name=\"android.permission.READ_SMS\"/>"]
+				"permissions": ["<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.GET_TASKS\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.READ_LOGS\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>","<uses-permission android:name=\"com.android.launcher.permission.UNINSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"com.android.launcher.permission.INSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>"]
 			},
 			"orientation": ["portrait-primary","portrait-secondary","landscape-primary","landscape-secondary"],/*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
 			"icons": {
@@ -144,30 +134,30 @@
 			"splashscreen": {
 				"ios": {
 					"iphone": {
-						"default": "F:/localTemplateDocument/App材料/image/司法普法教育/干部普法/普法启动页320.png", /*iPhone3启动图片选，分辨率：320x480*/
-						"retina35": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页640-960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-						"retina40": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页640-1136.png",
-						"retina47": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页750.png",
-						"retina55": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页1242.png",
-						"retina55l": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页2208.png"
+						"default": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页320.png", /*iPhone3启动图片选，分辨率：320x480*/
+						"retina35": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页640-960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+						"retina40": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页640-1136.png",
+						"retina47": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页750.png",
+						"retina55": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页1242.png",
+						"retina55l": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页2208.png"
 					},
 					"ipad": {
-						"portrait": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页768-1004.png", /*iPad竖屏启动图片，分辨率：768x1004*/
-						"portrait-retina": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页1536-2008.png",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
-						"landscape": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页1024-748.png", /*iPad横屏启动图片，分辨率：1024x748*/
-						"landscape-retina": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页2048-1496.png", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
-						"portrait7": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页768-1024.png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
-						"portrait-retina7": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页1536-2048.png",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
-						"landscape7": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/干部普法/普法启动页1024-768.png", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
-						"landscape-retina7": "F:/localTemplateDocument/App材料/image/司法普法教育/干部普法/普法启动页2048-1536.png"
+						"portrait": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页768-1004.png", /*iPad竖屏启动图片，分辨率：768x1004*/
+						"portrait-retina": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页1536-2008.png",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
+						"landscape": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页1024-748.png", /*iPad横屏启动图片，分辨率：1024x748*/
+						"landscape-retina": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页2048-1496.png", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
+						"portrait7": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页768-1024.png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
+						"portrait-retina7": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页1536-2048.png",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
+						"landscape7": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页1024-768.png", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
+						"landscape-retina7": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/干部普法 - 副本/普法启动页2048-1536.png"
 					}
 				},
 				"android": {
-					"mdpi": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/图标修改/01.png", /*普通屏启动图片，分辨率：240x282*/
-					"ldpi": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/图标修改/02.png", /*大屏启动图片，分辨率：320x442*/
-					"hdpi": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/图标修改/03.png", /*高分屏启动图片，分辨率：480x762*/
-					"xhdpi": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/图标修改/04.png", /*720P高分屏启动图片，分辨率：720x1242*/
-					"xxhdpi": "F:/localTemplateDocument/App材料/image/司法普法教育/学习测试系统/图标修改/05.png"
+					"mdpi": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/图标修改 - 副本/01.png", /*普通屏启动图片，分辨率：240x282*/
+					"ldpi": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/图标修改 - 副本/02.png", /*大屏启动图片，分辨率：320x442*/
+					"hdpi": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/图标修改 - 副本/03.png", /*高分屏启动图片，分辨率：480x762*/
+					"xhdpi": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/图标修改 - 副本/04.png", /*720P高分屏启动图片，分辨率：720x1242*/
+					"xxhdpi": "C:/Downloads/document/App材料/image/司法普法教育/学习测试系统/图标修改 - 副本/05.png"
 				}
 			},
 			"plugins": {
@@ -193,5 +183,137 @@
 				}
 			}
 		}
-	},"fullscreen":false
+	},"fullscreen":false,
+	"dependencies": {
+		"pages": {
+			"index-check-version.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css"
+				],
+				"refer": [
+					"image.html",
+					"pre.html"
+				],
+				"priority": 0
+			},
+			"image.html": {
+				"resources": [
+					"db/option-update.js",
+					"images/2.jpg",
+					"db/question.js",
+					"db/category.js",
+					"images/1.jpg",
+					"db/option.js",
+					"db/material.js",
+					"db/resolution.js",
+					"js/createDb.js",
+					"db/question-update.js"
+				],
+				"refer": [
+					"app/login.html"
+				],
+				"priority": 0
+			},
+			"app/login.html": {
+				"resources": [
+					"js/app.js",
+					"js/service.js",
+					"js/routes.js"
+				],
+				"refer": [
+					"index.html"
+				],
+				"priority": 0
+			},
+			"index.html": {
+				"resources": [
+					"fonts/mui.ttf",
+					"css/iconfont.css",
+					"js/update.js",
+					"index-subpage.html",
+					"js/app.js"
+				],
+				"refer": [
+					"app/personal.html"
+				],
+				"priority": 0
+			},
+			"index-subpage.html": {
+				"resources": [
+					"images/index/index-xxtk.png",
+					"js/scale.js",
+					"images/index/index-sc.png",
+					"js/sync.js",
+					"images/index/index-ct.png",
+					"images/index/index-mn.png",
+					"js/service.js",
+					"js/routes.js"
+				],
+				"refer": [
+					"app/review-chapter.html"
+				],
+				"priority": 0
+			},
+			"app/review-chapter.html": {
+				"resources": [],
+				"refer": [
+					"app/review-resolution.html"
+				],
+				"priority": 0
+			},
+			"app/personal.html": {
+				"resources": [
+					"images/person/person-header-tu1.jpg",
+					"images/person/my-person-xitongshezhi.png",
+					"images/person/my-person-xiaoxi.png"
+				],
+				"refer": [
+					"app/msg-center.html",
+					"app/about-us.html"
+				],
+				"priority": 0
+			},
+			"pre.html": {
+				"resources": [
+					"images/2.jpg",
+					"images/1.jpg"
+				],
+				"refer": [
+					"index.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"app/question-one.html",
+				"app/letest-card.html",
+				"fonts/iconfont2.ttf",
+				"app/cant-user.html",
+				"images/deployImages/72.png",
+				"fonts/iconfont.ttf",
+				"images/person/sfjbizhi.png",
+				"images/phone1.png",
+				"images/deployImages/48.png",
+				"Readme.txt",
+				"app/letest-question.html",
+				"images/tishi.png",
+				"index-subpage-content.html",
+				"css/feedback-page.css",
+				"app/system-setup.html",
+				"images/dtk.png",
+				"app/letest-prev.html",
+				"app/question.html",
+				"app/letest-submit.html",
+				"images/deployImages/96.png",
+				"app/cp-question.html",
+				"app/verifyCode.html",
+				"app/feedback.html",
+				"app/question-prev.html",
+				"images/person/my-person-mimaxiugai.png",
+				"app/letest-resolution.html"
+			]
+		}
+	}
 }

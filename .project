@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>LiCangPuFa</name>
+	<name>GanBuPuFa</name>
 	<comment>Create By HBuilder</comment>
 	<projects>
 	</projects>
@@ -22,7 +22,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1429091691805</id>
+			<id>1428645260285</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
